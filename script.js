@@ -97,40 +97,43 @@ let scores = {
 };
 
 let currentQuestionIndex = 0;
-
 window.onload = function () {
   const questionContainer = document.getElementById("question-container");
   const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
   const progress = document.getElementById("progress");
 
+  // 모든 질문을 한 번에 표시
+  function showQuestions() {
+    shuffledQuestions.forEach((currentQuestion, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.classList.add("question");
+
+      questionDiv.innerHTML = `
+          <p>${index + 1}. ${currentQuestion.text}</p>
+          <label>
+              <input type="radio" name="question${index}" value="yes" required> 예
+          </label>
+          <label>
+              <input type="radio" name="question${index}" value="no" required> 아니오
+          </label>
+        `;
+
+      questionContainer.appendChild(questionDiv);
+      questionDiv.classList.add("visible");
+    });
+
+    // 진행률 표시 업데이트
+    updateProgress();
+  }
+
+  // 진행률 업데이트
   function updateProgress() {
     const progressPercent =
       ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
     progress.style.width = `${progressPercent}%`;
   }
 
-  function showQuestion() {
-    const questionDiv = document.createElement("div");
-    const currentQuestion = shuffledQuestions[currentQuestionIndex];
-    questionDiv.classList.add("question");
-
-    questionDiv.innerHTML = `
-        <p>${currentQuestionIndex + 1}. ${currentQuestion.text}</p>
-        <label>
-            <input type="radio" name="question${currentQuestionIndex}" value="yes" required> 예
-        </label>
-        <label>
-            <input type="radio" name="question${currentQuestionIndex}" value="no" required> 아니오
-        </label>
-      `;
-
-    questionContainer.appendChild(questionDiv);
-    questionDiv.classList.add("visible");
-
-    updateProgress();
-  }
-
-  showQuestion();
+  showQuestions();
 
   document
     .getElementById("quizForm")

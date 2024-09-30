@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>연애 프로그램 스타일 테스트</title>
+    <title>연애 스타일 테스트</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -12,15 +12,21 @@
   </head>
   <body>
     <div class="container">
-      <h1>연애 프로그램 스타일 테스트</h1>
+      <h1>연애 스타일 테스트</h1>
+      <div id="progress-bar">
+        <div id="progress"></div>
+      </div>
       <form id="quizForm">
         <div id="question-container"></div>
         <button type="submit" class="submit-btn">결과 제출</button>
       </form>
-      <div id="result" class="hidden"></div>
-      <!-- 결과를 표시할 부분 -->
+      <div id="result" class="hidden">
+        <h2>결과</h2>
+        <p id="result-text"></p>
+        <p id="result-tip"></p>
+        <button id="shareBtn" class="share-btn">결과 공유하기</button>
+      </div>
     </div>
     <script src="script.js"></script>
-    <!-- JavaScript 파일 로드 -->
   </body>
 </html>

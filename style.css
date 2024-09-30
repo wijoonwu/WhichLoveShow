@@ -40,23 +40,25 @@ form {
 
 .question {
   margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0; /* 연한 구분선 추가 */
 }
 
 .question p {
-  font-size: 1.2rem;
-  color: #7f8c8d;
+  font-size: 1.3rem; /* 글자 크기 조금 증가 */
+  color: #2c3e50; /* 더 선명한 색상으로 수정 */
   margin-bottom: 12px;
 }
 
 label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-right: 20px; /* 라벨들 사이에 여백 추가 */
   cursor: pointer;
 }
 
 input[type="radio"] {
-  margin-right: 12px;
+  margin-right: 8px;
   accent-color: #1abc9c;
 }
 
@@ -124,6 +126,7 @@ input[type="radio"] {
 .share-btn:hover {
   background-color: #2980b9;
 }
+
 .retry-btn {
   background-color: #e74c3c; /* 적절한 대비를 위한 레드 톤 */
   color: #ffffff;

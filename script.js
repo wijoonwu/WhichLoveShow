@@ -97,102 +97,108 @@ let scores = {
 };
 
 let currentQuestionIndex = 0;
+
 window.onload = function () {
-  const questionContainer = document.getElementById("question-container");
-  const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
-  const progress = document.getElementById("progress");
+  const queryParams = new URLSearchParams(window.location.search);
+  const resultFromURL = queryParams.get("result");
 
-  // 모든 질문을 한 번에 표시
-  function showQuestions() {
-    shuffledQuestions.forEach((currentQuestion, index) => {
-      const questionDiv = document.createElement("div");
-      questionDiv.classList.add("question");
+  if (resultFromURL) {
+    // URL에 결과가 있으면 결과를 표시
+    showResult(decodeURIComponent(resultFromURL));
+  } else {
+    // 질문들 표시
+    const questionContainer = document.getElementById("question-container");
+    const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
 
-      questionDiv.innerHTML = `
-          <p>${index + 1}. ${currentQuestion.text}</p>
-          <label>
-              <input type="radio" name="question${index}" value="yes" required> 예
-          </label>
-          <label>
-              <input type="radio" name="question${index}" value="no" required> 아니오
-          </label>
-        `;
+    function showQuestions() {
+      shuffledQuestions.forEach((currentQuestion, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.classList.add("question");
 
-      questionContainer.appendChild(questionDiv);
-      questionDiv.classList.add("visible");
-    });
+        questionDiv.innerHTML = `
+              <p>${index + 1}. ${currentQuestion.text}</p>
+              <label>
+                  <input type="radio" name="question${index}" value="yes" required> 예
+              </label>
+              <label>
+                  <input type="radio" name="question${index}" value="no" required> 아니오
+              </label>
+            `;
+        questionContainer.appendChild(questionDiv);
+      });
+    }
+
+    showQuestions();
+
+    document
+      .getElementById("quizForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        scores = { 하트시그널: 0, "솔로 지옥": 0, 환승연애: 0, "나는 솔로": 0 };
+
+        const formData = new FormData(this);
+        formData.forEach((value, key) => {
+          const questionIndex = parseInt(key.replace("question", ""));
+          const currentQuestion = shuffledQuestions[questionIndex];
+
+          if (value === "yes") {
+            if (currentQuestion.multiplePrograms) {
+              currentQuestion.multiplePrograms.forEach((program) => {
+                scores[program]++;
+              });
+            } else {
+              scores[currentQuestion.program]++;
+            }
+          } else if (value === "no") {
+            if (currentQuestion.alternativeProgram) {
+              scores[currentQuestion.alternativeProgram]++;
+            }
+          }
+        });
+
+        let maxScore = 0;
+        let programStyle = "";
+
+        for (let program in scores) {
+          if (scores[program] > maxScore) {
+            maxScore = scores[program];
+            programStyle = program;
+          }
+        }
+
+        showResult(programStyle);
+      });
   }
 
-  showQuestions();
+  function showResult(programStyle) {
+    const resultDiv = document.getElementById("result");
+    const resultText = document.getElementById("result-text");
+    const resultTip = document.getElementById("result-tip");
 
-  document
-    .getElementById("quizForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-      scores = { 하트시그널: 0, "솔로 지옥": 0, 환승연애: 0, "나는 솔로": 0 };
+    resultText.textContent = `${programStyle} 스타일입니다!`;
 
-      const formData = new FormData(this);
-      formData.forEach((value, key) => {
-        const questionIndex = parseInt(key.replace("question", ""));
-        const currentQuestion = shuffledQuestions[questionIndex];
+    const tips = {
+      하트시그널:
+        "사람들과 자연스럽게 어울리며, 상대를 편안하게 하는 매력이 있고 누구나 호감을 가질만한 외모를 가진 당신은",
+      "솔로 지옥":
+        "독립적이고, 자유로운 연애를 지향하며 자신의 매력을 잘 알고 있고, 정복욕이 있는 매력적인 당신은",
+      환승연애:
+        "감정의 변화가 많고, 사랑하는 사람에게 사랑과 관심 받기를 원하는 순수한 로맨티스트인 당신은",
+      "나는 솔로": "새로운 만남에 열려 있고 진솔하고 담백한 매력이 있는 당신은",
+    };
 
-        if (value === "yes") {
-          if (currentQuestion.multiplePrograms) {
-            currentQuestion.multiplePrograms.forEach((program) => {
-              scores[program]++;
-            });
-          } else {
-            scores[currentQuestion.program]++;
-          }
-        } else if (value === "no") {
-          if (currentQuestion.alternativeProgram) {
-            scores[currentQuestion.alternativeProgram]++;
-          }
-        }
+    resultTip.textContent = tips[programStyle];
+
+    resultDiv.classList.remove("hidden");
+    resultDiv.scrollIntoView({ behavior: "smooth" });
+
+    document.getElementById("shareBtn").addEventListener("click", () => {
+      const shareUrl = `${window.location.origin}${
+        window.location.pathname
+      }?result=${encodeURIComponent(programStyle)}`;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        alert("결과 링크가 클립보드에 복사되었습니다.");
       });
-
-      let maxScore = 0;
-      let programStyle = "";
-
-      for (let program in scores) {
-        if (scores[program] > maxScore) {
-          maxScore = scores[program];
-          programStyle = program;
-        }
-      }
-
-      const resultDiv = document.getElementById("result");
-      const resultText = document.getElementById("result-text");
-      const resultTip = document.getElementById("result-tip");
-
-      resultText.textContent = `${programStyle} 스타일입니다!`;
-
-      const tips = {
-        하트시그널:
-          "사람들과 자연스럽게 어울리며, 상대를 편안하게 하는 매력이 있고 누구나 호감을 가질만한 외모를 가진 당신은",
-        "솔로 지옥":
-          "독립적이고, 자유로운 연애를 지향하며 자신의 매력을 잘 알고 있고, 정복욕이 있는 매력적인 당신은",
-        환승연애:
-          "감정의 변화가 많고, 사랑하는 사람에게 사랑과 관심 받기를 원하는 순수한 로맨티스트인 당신은",
-        "나는 솔로":
-          "새로운 만남에 열려 있고 진솔하고 담백한 매력이 있는 당신은",
-      };
-
-      resultTip.textContent = tips[programStyle];
-
-      resultDiv.classList.remove("hidden");
-      resultDiv.scrollIntoView({ behavior: "smooth" });
     });
-
-  document.getElementById("shareBtn").addEventListener("click", () => {
-    const textToShare = document.getElementById("result-text").textContent;
-    navigator
-      .share({
-        title: "연애 스타일 테스트 결과",
-        text: textToShare,
-      })
-      .catch((err) => {
-        console.log("공유 실패", err);
-      });
-  });
+  }
 };

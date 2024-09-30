@@ -121,16 +121,6 @@ window.onload = function () {
       questionContainer.appendChild(questionDiv);
       questionDiv.classList.add("visible");
     });
-
-    // 진행률 표시 업데이트
-    updateProgress();
-  }
-
-  // 진행률 업데이트
-  function updateProgress() {
-    const progressPercent =
-      ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
-    progress.style.width = `${progressPercent}%`;
   }
 
   showQuestions();
@@ -194,26 +184,15 @@ window.onload = function () {
       resultDiv.scrollIntoView({ behavior: "smooth" });
     });
 
-  // URL 복사 버튼 기능
-  document.getElementById("copyUrlBtn").addEventListener("click", () => {
-    const currentUrl = window.location.href;
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        alert("URL이 복사되었습니다.");
+  document.getElementById("shareBtn").addEventListener("click", () => {
+    const textToShare = document.getElementById("result-text").textContent;
+    navigator
+      .share({
+        title: "연애 스타일 테스트 결과",
+        text: textToShare,
       })
       .catch((err) => {
-        alert("URL 복사에 실패했습니다.");
+        console.log("공유 실패", err);
       });
-  });
-
-  // 이미지 캡처 버튼 기능
-  document.getElementById("captureBtn").addEventListener("click", () => {
-    html2canvas(document.getElementById("result")).then((canvas) => {
-      const link = document.createElement("a");
-      link.download = "result.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    });
   });
 };

@@ -1,4 +1,3 @@
-// 질문 리스트와 각 질문에 해당하는 프로그램
 const questions = [
   {
     text: "애인이 내 사진을 SNS에 올리려고 하는 경우가 많았다.",
@@ -82,7 +81,11 @@ const questions = [
   {
     text: "헤어지고 나서 새로운 연애를 시작하기까지 텀이 짧은 편이다.",
     program: "솔로 지옥",
-    alternativeProgram: "환승 연애",
+    alternativeProgram: "환승연애",
+  },
+  {
+    text: "장기간 사귄 전 애인이 있다.",
+    program: "환승연애",
   },
 ];
 
@@ -93,34 +96,47 @@ let scores = {
   "나는 솔로": 0,
 };
 
+let currentQuestionIndex = 0;
+
 window.onload = function () {
   const questionContainer = document.getElementById("question-container");
-
-  // 질문을 랜덤하게 섞기
   const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
+  const progress = document.getElementById("progress");
 
-  shuffledQuestions.forEach((question, index) => {
+  function updateProgress() {
+    const progressPercent =
+      ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+    progress.style.width = `${progressPercent}%`;
+  }
+
+  function showQuestion() {
     const questionDiv = document.createElement("div");
+    const currentQuestion = shuffledQuestions[currentQuestionIndex];
     questionDiv.classList.add("question");
 
     questionDiv.innerHTML = `
-        <p>${index + 1}. ${question.text}</p>
+        <p>${currentQuestionIndex + 1}. ${currentQuestion.text}</p>
         <label>
-            <input type="radio" name="question${index}" value="yes" required> 예
+            <input type="radio" name="question${currentQuestionIndex}" value="yes" required> 예
         </label>
         <label>
-            <input type="radio" name="question${index}" value="no" required> 아니오
+            <input type="radio" name="question${currentQuestionIndex}" value="no" required> 아니오
         </label>
       `;
 
     questionContainer.appendChild(questionDiv);
-  });
+    questionDiv.classList.add("visible");
+
+    updateProgress();
+  }
+
+  showQuestion();
 
   document
     .getElementById("quizForm")
     .addEventListener("submit", function (event) {
-      event.preventDefault(); // 폼 제출 시 새로고침 방지
-      scores = { 하트시그널: 0, "솔로 지옥": 0, 환승연애: 0, "나는 솔로": 0 }; // 점수 초기화
+      event.preventDefault();
+      scores = { 하트시그널: 0, "솔로 지옥": 0, 환승연애: 0, "나는 솔로": 0 };
 
       const formData = new FormData(this);
       formData.forEach((value, key) => {
@@ -128,7 +144,6 @@ window.onload = function () {
         const currentQuestion = shuffledQuestions[questionIndex];
 
         if (value === "yes") {
-          // 예일 경우 기본 프로그램에 점수 추가
           if (currentQuestion.multiplePrograms) {
             currentQuestion.multiplePrograms.forEach((program) => {
               scores[program]++;
@@ -137,14 +152,12 @@ window.onload = function () {
             scores[currentQuestion.program]++;
           }
         } else if (value === "no") {
-          // 아니오일 경우 alternativeProgram에 점수 추가
           if (currentQuestion.alternativeProgram) {
             scores[currentQuestion.alternativeProgram]++;
           }
         }
       });
 
-      // 점수가 가장 높은 프로그램 찾기
       let maxScore = 0;
       let programStyle = "";
 
@@ -155,12 +168,49 @@ window.onload = function () {
         }
       }
 
-      // 결과 보여주기
       const resultDiv = document.getElementById("result");
-      resultDiv.textContent = `당신은 ${programStyle} 스타일입니다!`;
-      resultDiv.classList.remove("hidden");
+      const resultText = document.getElementById("result-text");
+      const resultTip = document.getElementById("result-tip");
 
-      // 결과 부분으로 스크롤 이동
+      resultText.textContent = `당신은 ${programStyle} 스타일입니다!`;
+
+      const tips = {
+        하트시그널:
+          "당신은 사람들과 자연스럽게 어울리며, 상대를 편안하게 하는 매력이 있고 누구나 호감을 가질만한 외모를 가진 ",
+        "솔로 지옥":
+          "당신은 독립적이고, 자유로운 연애를 지향하며 자신의 매력을 잘 알고 있고, 정복욕이 있는 매력적인 ",
+        환승연애:
+          "감정의 변화가 많고, 사랑하는 사람에게 사랑과 관심 받기를 원하는 순수한 로맨티스트인",
+        "나는 솔로":
+          "당신은 새로운 만남에 열려 있고 진솔하고 담백한 매력이 있는",
+      };
+
+      resultTip.textContent = tips[programStyle];
+
+      resultDiv.classList.remove("hidden");
       resultDiv.scrollIntoView({ behavior: "smooth" });
     });
+
+  // URL 복사 버튼 기능
+  document.getElementById("copyUrlBtn").addEventListener("click", () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        alert("URL이 복사되었습니다.");
+      })
+      .catch((err) => {
+        alert("URL 복사에 실패했습니다.");
+      });
+  });
+
+  // 이미지 캡처 버튼 기능
+  document.getElementById("captureBtn").addEventListener("click", () => {
+    html2canvas(document.getElementById("result")).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = "result.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  });
 };

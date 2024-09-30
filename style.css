@@ -97,6 +97,13 @@ input[type="radio"] {
   display: none;
 }
 
+#result-text {
+  font-size: 2rem; /* 기존보다 큰 크기 */
+  color: #2c3e50; /* 더 진한 색상 */
+  font-weight: bold; /* 글씨를 두껍게 */
+  margin-top: 15px; /* 위쪽에 여백 추가 */
+}
+
 #result-tip {
   font-style: italic;
   color: #95a5a6;

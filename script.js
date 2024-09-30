@@ -165,17 +165,17 @@ window.onload = function () {
       const resultText = document.getElementById("result-text");
       const resultTip = document.getElementById("result-tip");
 
-      resultText.textContent = `당신은 ${programStyle} 스타일입니다!`;
+      resultText.textContent = `${programStyle} 스타일입니다!`;
 
       const tips = {
         하트시그널:
-          "당신은 사람들과 자연스럽게 어울리며, 상대를 편안하게 하는 매력이 있고 누구나 호감을 가질만한 외모를 가진 ",
+          "당신은 사람들과 자연스럽게 어울리며, 상대를 편안하게 하는 매력이 있고 누구나 호감을 가질만한 외모를 가진 당신은",
         "솔로 지옥":
-          "당신은 독립적이고, 자유로운 연애를 지향하며 자신의 매력을 잘 알고 있고, 정복욕이 있는 매력적인 ",
+          "당신은 독립적이고, 자유로운 연애를 지향하며 자신의 매력을 잘 알고 있고, 정복욕이 있는 매력적인 당신은",
         환승연애:
-          "감정의 변화가 많고, 사랑하는 사람에게 사랑과 관심 받기를 원하는 순수한 로맨티스트인",
+          "감정의 변화가 많고, 사랑하는 사람에게 사랑과 관심 받기를 원하는 순수한 로맨티스트인 당신은",
         "나는 솔로":
-          "당신은 새로운 만남에 열려 있고 진솔하고 담백한 매력이 있는",
+          "당신은 새로운 만남에 열려 있고 진솔하고 담백한 매력이 있는 당신은",
       };
 
       resultTip.textContent = tips[programStyle];

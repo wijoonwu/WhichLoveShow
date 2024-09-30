@@ -1,60 +1,69 @@
-/* Google 폰트 사용 */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
-
 body {
   font-family: "Poppins", sans-serif;
-  background-color: #f0f4f8; /* 차분한 연한 블루 그레이 */
+  background-color: #f4f4f9;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   height: 100vh;
-  overflow-y: auto; /* 페이지 스크롤 가능하게 설정 */
+  overflow-y: auto;
 }
 
 .container {
   background-color: #ffffff;
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 600px;
   text-align: center;
-  border: 2px solid #d1d9e0; /* 연한 그레이 블루 테두리 */
   margin-top: 20px;
 }
 
 h1 {
   font-size: 2.5em;
-  color: #3a506b; /* 짙은 네이비 블루 */
+  color: #3a506b;
   margin-bottom: 30px;
   font-weight: 600;
 }
 
+#progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  height: 15px;
+  overflow: hidden;
+}
+
+#progress {
+  width: 0;
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
 .question {
   margin-bottom: 25px;
-  font-size: 1.1em;
-  color: #3a506b;
   text-align: left;
   padding: 15px;
-  background-color: #f7f9fc; /* 연한 블루 그레이 배경 */
+  background-color: #f7f9fc;
   border-radius: 10px;
   border: 1px solid #d1d9e0;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-label {
-  font-size: 1em;
-  color: #5c6b7a; /* 중간 정도의 블루 그레이 */
-  margin-right: 10px;
-}
-
-input[type="radio"] {
-  margin-right: 5px;
+.question.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .submit-btn {
-  background-color: #5fa8d3; /* 밝은 블루 버튼 */
+  background-color: #5fa8d3;
   color: white;
   padding: 15px 40px;
   border: none;
@@ -66,11 +75,6 @@ input[type="radio"] {
   box-shadow: 0 6px 15px rgba(95, 168, 211, 0.3);
 }
 
-.submit-btn:hover {
-  background-color: #3a89c1; /* 조금 더 진한 블루 */
-  box-shadow: 0 8px 20px rgba(58, 137, 193, 0.3);
-}
-
 #result {
   margin-top: 40px;
   font-size: 1.5em;
@@ -78,7 +82,7 @@ input[type="radio"] {
   font-weight: 600;
   padding: 20px;
   border-radius: 15px;
-  background-color: #e8eff5; /* 연한 블루 그레이 배경 */
+  background-color: #e8eff5;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -86,23 +90,13 @@ input[type="radio"] {
   display: none;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2em;
-  }
-
-  .submit-btn {
-    padding: 12px 30px;
-    font-size: 1.1em;
-  }
-
-  .question {
-    font-size: 1em;
-    padding: 10px;
-  }
-
-  #result {
-    font-size: 1.3em;
-  }
+.share-btn {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1em;
+  margin-top: 20px;
+  cursor: pointer;
 }

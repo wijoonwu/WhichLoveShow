@@ -102,9 +102,11 @@ window.onload = function () {
   const queryParams = new URLSearchParams(window.location.search);
   const resultFromURL = queryParams.get("result");
 
+  // '결과 제출' 버튼 숨기기 로직
+  const submitBtn = document.querySelector(".submit-btn");
   if (resultFromURL) {
-    // URL에 결과가 있으면 결과를 표시
-    showResult(decodeURIComponent(resultFromURL));
+    submitBtn.style.display = "none"; // URL에 result 파라미터가 있으면 '결과 제출' 버튼 숨기기
+    showResult(decodeURIComponent(resultFromURL)); // 결과 보여주기
   } else {
     // 질문들 표시
     const questionContainer = document.getElementById("question-container");
@@ -204,7 +206,6 @@ window.onload = function () {
 
     // 다시 테스트하기 버튼 이벤트
     document.getElementById("retryBtn").addEventListener("click", () => {
-      // URL에서 result 파라미터 제거
       const url = new URL(window.location);
       url.searchParams.delete("result"); // 'result' 파라미터 삭제
       window.location.href = url.toString(); // 변경된 URL로 페이지 로드

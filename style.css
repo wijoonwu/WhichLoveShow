@@ -124,3 +124,18 @@ input[type="radio"] {
 .share-btn:hover {
   background-color: #2980b9;
 }
+.retry-btn {
+  background-color: #e74c3c; /* 적절한 대비를 위한 레드 톤 */
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.retry-btn:hover {
+  background-color: #c0392b; /* hover 시 더 짙은 레드 */
+}

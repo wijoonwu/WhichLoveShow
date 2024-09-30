@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>연애 스타일 테스트</title>
+    <title>어울리는 연애 프로그램 테스트</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -12,7 +12,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>연애 스타일 테스트</h1>
+      <h1>어울리는 연애 프로그램 테스트</h1>
       <div id="progress-bar">
         <div id="progress"></div>
       </div>
@@ -22,11 +22,13 @@
       </form>
       <div id="result" class="hidden">
         <h2>결과</h2>
-        <p id="result-text"></p>
         <p id="result-tip"></p>
-        <button id="shareBtn" class="share-btn">결과 공유하기</button>
+        <p id="result-text"></p>
+        <button id="copyUrlBtn" class="share-btn">URL 복사하기</button>
+        <button id="captureBtn" class="share-btn">이미지 캡처하기</button>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
